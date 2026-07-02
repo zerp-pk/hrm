@@ -1,6 +1,6 @@
 {
     "name": "zerp/hrm",
-    "description": "Description for hrm package",
+    "description": "Human Resource Management module for the Zerp ERP platform",
     "type": "library",
     "license": "MIT",
     "require": {},

@@ -18,7 +18,7 @@ class MarketplaceSettingSeeder extends Seeder
             $files = File::files($marketplaceDir);
             foreach ($files as $file) {
                 if (in_array($file->getExtension(), ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
-                    $screenshots[] = '/packages/workdo/Hrm/src/marketplace/' . $file->getFilename();
+                    $screenshots[] = '/packages/local/Hrm/src/marketplace/' . $file->getFilename();
                 }
             }
         }
@@ -33,7 +33,7 @@ class MarketplaceSettingSeeder extends Seeder
                 'sections' => [
                     'hero' => [
                         'variant' => 'hero1',
-                        'title' => 'Hrm Module for ERPGo SaaS',
+                        'title' => 'Hrm Module for Zerp',
                         'subtitle' => 'Streamline your hrm workflow with comprehensive tools and automated management.',
                         'primary_button_text' => 'Install Hrm Module',
                         'primary_button_link' => '#install',
@@ -55,19 +55,19 @@ class MarketplaceSettingSeeder extends Seeder
                                 'title' => 'Feature 1',
                                 'description' => 'Description of first key feature for hrm management.',
                                 'keyPoints' => ['Point 1', 'Point 2', 'Point 3', 'Point 4'],
-                                'screenshot' => '/packages/workdo/Hrm/src/marketplace/image1.png'
+                                'screenshot' => '/packages/local/Hrm/src/marketplace/image1.png'
                             ],
                             [
                                 'title' => 'Feature 2',
                                 'description' => 'Description of second key feature for hrm organization.',
                                 'keyPoints' => ['Point 1', 'Point 2', 'Point 3', 'Point 4'],
-                                'screenshot' => '/packages/workdo/Hrm/src/marketplace/image2.png'
+                                'screenshot' => '/packages/local/Hrm/src/marketplace/image2.png'
                             ],
                             [
                                 'title' => 'Feature 3',
                                 'description' => 'Description of third key feature for hrm tracking.',
                                 'keyPoints' => ['Point 1', 'Point 2', 'Point 3', 'Point 4'],
-                                'screenshot' => '/packages/workdo/Hrm/src/marketplace/image3.png'
+                                'screenshot' => '/packages/local/Hrm/src/marketplace/image3.png'
                             ]
                         ]
                     ],
