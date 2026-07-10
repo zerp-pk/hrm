@@ -124,6 +124,7 @@ Route::middleware(['web', 'auth', 'verified', 'PlanModuleCheck:Hrm'])->group(fun
         Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
         Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
         Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+        Route::get('/{employee}/card', [EmployeeController::class, 'card'])->name('card');
         Route::get('/{employee}', [EmployeeController::class, 'show'])->name('show');
     });
 

@@ -325,6 +325,22 @@ class EmployeeController extends Controller
         }
     }
 
+    public function card(Employee $employee)
+    {
+        if (Auth::user()->can('view-employees')) {
+            if (!$this->checkEmployeeAccess($employee)) {
+                return redirect()->route('hrm.employees.index')->with('error', __('Permission denied'));
+            }
+            $employee->load(['user:id,name,email,avatar', 'branch', 'department', 'designation']);
+
+            return Inertia::render('Hrm/Employees/card/EmployeeCard', [
+                'employee' => $employee,
+            ]);
+        } else {
+            return redirect()->route('hrm.employees.index')->with('error', __('Permission denied'));
+        }
+    }
+
     public function deleteDocument($employeeId, EmployeeDocument $document)
     {
         if (Auth::user()->can('edit-employees')) {

@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from 'lucide-react';
+import { Eye, CreditCard } from 'lucide-react';
 import { formatDate, getImagePath, getCurrencySymbol } from '@/utils/helpers';
 
 export default function Show() {
@@ -75,6 +75,14 @@ export default function Show() {
                                     <p className="font-medium">{employee.designation?.designation_name}</p>
                                 </div>
                             </div>
+
+                            <button
+                                onClick={() => window.open(route('hrm.employees.card', employee.id), '_blank')}
+                                className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                            >
+                                <CreditCard className="h-4 w-4" />
+                                {t('ID Card')}
+                            </button>
                         </CardContent>
                     </Card>
                 </div>
