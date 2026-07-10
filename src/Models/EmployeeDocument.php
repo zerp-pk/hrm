@@ -14,6 +14,7 @@ class EmployeeDocument extends Model
         'file_path',
         'creator_id',
         'created_by',
+        'media_id',
     ];
 
     public function user(): BelongsTo
@@ -24,5 +25,10 @@ class EmployeeDocument extends Model
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(EmployeeDocumentType::class);
+    }
+
+    public function media(): BelongsTo
+    {
+        return $this->belongsTo(\Spatie\MediaLibrary\MediaCollections\Models\Media::class, 'media_id');
     }
 }

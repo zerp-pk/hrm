@@ -162,6 +162,21 @@ class LeaveApplicationController extends Controller
             $leaveapplication->created_by = creatorId();
             $leaveapplication->save();
 
+            if ($leaveapplication->attachment) {
+                $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                    $leaveapplication->attachment,
+                    LeaveApplication::class,
+                    $leaveapplication->id,
+                    'leave_attachments',
+                    Auth::id(),
+                    creatorId(),
+                    \App\Services\MediaAttachmentService::ensureDirectory('Leave Attachments', creatorId(), Auth::id())
+                );
+                if ($media) {
+                    $leaveapplication->update(['media_id' => $media->id]);
+                }
+            }
+
             CreateLeaveApplication::dispatch($request, $leaveapplication);
 
             return redirect()->route('hrm.leave-applications.index')->with('success', __('The leaveapplication has been created successfully.'));
@@ -265,6 +280,21 @@ class LeaveApplicationController extends Controller
 
             $leaveapplication->save();
 
+            if ($leaveapplication->attachment) {
+                $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                    $leaveapplication->attachment,
+                    LeaveApplication::class,
+                    $leaveapplication->id,
+                    'leave_attachments',
+                    Auth::id(),
+                    creatorId(),
+                    \App\Services\MediaAttachmentService::ensureDirectory('Leave Attachments', creatorId(), Auth::id())
+                );
+                $leaveapplication->update(['media_id' => $media?->id]);
+            } else {
+                $leaveapplication->update(['media_id' => null]);
+            }
+
             UpdateLeaveApplication::dispatch($request, $leaveapplication);
 
             return redirect()->back()->with('success', __('The leaveapplication details are updated successfully.'));
@@ -277,6 +307,9 @@ class LeaveApplicationController extends Controller
     {
         if (Auth::user()->can('delete-leave-applications')) {
             DestroyLeaveApplication::dispatch($leaveapplication);
+            if ($leaveapplication->media_id && $leaveapplication->media) {
+                \App\Services\MediaAttachmentService::deleteMedia($leaveapplication->media);
+            }
             $leaveapplication->delete();
 
             return redirect()->back()->with('success', __('The leaveapplication has been deleted.'));

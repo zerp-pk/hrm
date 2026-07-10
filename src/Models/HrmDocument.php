@@ -24,6 +24,7 @@ class HrmDocument extends Model
         'approved_by',
         'creator_id',
         'created_by',
+        'media_id',
     ];
 
     protected function casts(): array
@@ -54,5 +55,10 @@ class HrmDocument extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    public function media(): BelongsTo
+    {
+        return $this->belongsTo(\Spatie\MediaLibrary\MediaCollections\Models\Media::class, 'media_id');
     }
 }

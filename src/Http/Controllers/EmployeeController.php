@@ -144,12 +144,23 @@ class EmployeeController extends Controller
                         $upload = upload_file($request, "documents.{$index}.file", $fileNameToStore, 'employee_documents');
 
                         if (isset($upload['flag']) && $upload['flag'] == 1 && isset($upload['url'])) {
+                            $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                                $upload['url'],
+                                Employee::class,
+                                $employee->id,
+                                'employee_documents',
+                                Auth::id(),
+                                creatorId(),
+                                \App\Services\MediaAttachmentService::ensureDirectory('Employee Documents', creatorId(), Auth::id())
+                            );
+
                             EmployeeDocument::create([
                                 'user_id' => $employee->id,
                                 'document_type_id' => $document['document_type_id'],
                                 'file_path' => $upload['url'],
                                 'creator_id' => Auth::id(),
                                 'created_by' => creatorId(),
+                                'media_id' => $media?->id,
                             ]);
                         }
                     }
@@ -244,12 +255,23 @@ class EmployeeController extends Controller
                         $upload = upload_file($request, "documents.{$index}.file", $fileNameToStore, 'employee_documents');
 
                         if (isset($upload['flag']) && $upload['flag'] == 1 && isset($upload['url'])) {
+                            $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                                $upload['url'],
+                                Employee::class,
+                                $employee->id,
+                                'employee_documents',
+                                Auth::id(),
+                                creatorId(),
+                                \App\Services\MediaAttachmentService::ensureDirectory('Employee Documents', creatorId(), Auth::id())
+                            );
+
                             EmployeeDocument::create([
                                 'user_id' => $employee->id,
                                 'document_type_id' => $document['document_type_id'],
                                 'file_path' => $upload['url'],
                                 'creator_id' => Auth::id(),
                                 'created_by' => creatorId(),
+                                'media_id' => $media?->id,
                             ]);
                         }
                     }
@@ -310,7 +332,11 @@ class EmployeeController extends Controller
                 return redirect()->back()->with('error', __('Document not found'));
             }
 
-            delete_file($document->file_path);
+            if ($document->media_id && $document->media) {
+                \App\Services\MediaAttachmentService::deleteMedia($document->media);
+            } else {
+                delete_file($document->file_path);
+            }
             $document->delete();
 
             return redirect()->back()->with('success', __('Document deleted successfully'));

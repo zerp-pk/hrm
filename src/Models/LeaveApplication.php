@@ -25,6 +25,7 @@ class LeaveApplication extends Model
         'approved_by',
         'creator_id',
         'created_by',
+        'media_id',
     ];
 
     protected function casts(): array
@@ -52,5 +53,10 @@ class LeaveApplication extends Model
     public function approved_by()
     {
         return $this->belongsTo(User::class,'approved_by','id');
+    }
+
+    public function media()
+    {
+        return $this->belongsTo(\Spatie\MediaLibrary\MediaCollections\Models\Media::class, 'media_id');
     }
 }

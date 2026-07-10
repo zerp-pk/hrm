@@ -63,6 +63,21 @@ class HrmDocumentController extends Controller
             $document->created_by = creatorId();
             $document->save();
 
+            if ($document->document) {
+                $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                    $document->document,
+                    HrmDocument::class,
+                    $document->id,
+                    'hrm_documents',
+                    Auth::id(),
+                    creatorId(),
+                    \App\Services\MediaAttachmentService::ensureDirectory('HRM Documents', creatorId(), Auth::id())
+                );
+                if ($media) {
+                    $document->update(['media_id' => $media->id]);
+                }
+            }
+
             CreateDocument::dispatch($request, $document);
 
             return redirect()->route('hrm.documents.index')->with('success', __('The document has been created successfully.'));
@@ -82,6 +97,21 @@ class HrmDocumentController extends Controller
             $hrmDocument->document_category_id = $validated['document_category_id'];
             $hrmDocument->document = $validated['document'];
             $hrmDocument->save();
+
+            if ($hrmDocument->document) {
+                $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                    $hrmDocument->document,
+                    HrmDocument::class,
+                    $hrmDocument->id,
+                    'hrm_documents',
+                    Auth::id(),
+                    creatorId(),
+                    \App\Services\MediaAttachmentService::ensureDirectory('HRM Documents', creatorId(), Auth::id())
+                );
+                $hrmDocument->update(['media_id' => $media?->id]);
+            } else {
+                $hrmDocument->update(['media_id' => null]);
+            }
 
             UpdateDocument::dispatch($request, $hrmDocument);
 
@@ -119,6 +149,9 @@ class HrmDocumentController extends Controller
     {
         if(Auth::user()->can('delete-hrm-documents')){
             DestroyDocument::dispatch($hrmDocument);
+            if ($hrmDocument->media_id && $hrmDocument->media) {
+                \App\Services\MediaAttachmentService::deleteMedia($hrmDocument->media);
+            }
             $hrmDocument->delete();
             return redirect()->back()->with('success', __('The document has been deleted.'));
         }

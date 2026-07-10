@@ -191,6 +191,21 @@ class LeaveApiController extends Controller
                 }
                 $leaveapplication->save();
 
+                if ($leaveapplication->attachment) {
+                    $media = \App\Services\MediaAttachmentService::resolveOrBackfill(
+                        $leaveapplication->attachment,
+                        LeaveApplication::class,
+                        $leaveapplication->id,
+                        'leave_attachments',
+                        Auth::id(),
+                        $creatorId,
+                        \App\Services\MediaAttachmentService::ensureDirectory('Leave Attachments', $creatorId, Auth::id())
+                    );
+                    if ($media) {
+                        $leaveapplication->update(['media_id' => $media->id]);
+                    }
+                }
+
                 $data = [
                     'id'               => $leaveapplication->id,
                     'employee_id'      => $leaveapplication->employee_id,
