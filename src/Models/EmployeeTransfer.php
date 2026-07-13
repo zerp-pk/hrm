@@ -2,6 +2,7 @@
 
 namespace Zerp\Hrm\Models;
 
+use App\Models\Concerns\TenantScoped;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Zerp\Hrm\Models\Designation;
 
 class EmployeeTransfer extends Model
 {
-    use HasFactory;
+    use HasFactory, TenantScoped;
 
     protected $fillable = [
         'transfer_date',

@@ -14,8 +14,8 @@ class StoreDeductionRequest extends FormRequest
     public function rules()
     {
         return [
-            'employee_id' => 'required|exists:employees,id',
-            'deduction_type_id' => 'required|exists:deduction_types,id',
+            'employee_id' => 'required|exists:employees,id,created_by,' . creatorId(),
+            'deduction_type_id' => 'required|exists:deduction_types,id,created_by,' . creatorId(),
             'type' => 'required|in:fixed,percentage',
             'amount' => 'required|numeric|min:0',
         ];

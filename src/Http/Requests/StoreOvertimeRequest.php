@@ -14,7 +14,7 @@ class StoreOvertimeRequest extends FormRequest
     public function rules()
     {
         return [
-            'employee_id' => 'required|exists:employees,id',
+            'employee_id' => 'required|exists:employees,id,created_by,' . creatorId(),
             'title' => 'required|string|max:255',
             'total_days' => 'required|integer|min:1',
             'hours' => 'required|numeric|min:0',

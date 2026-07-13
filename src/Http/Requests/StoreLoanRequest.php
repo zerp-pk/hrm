@@ -14,9 +14,9 @@ class StoreLoanRequest extends FormRequest
     public function rules()
     {
         return [
-            'employee_id' => 'required|exists:employees,id',
+            'employee_id' => 'required|exists:employees,id,created_by,' . creatorId(),
             'title' => 'required|string|max:255',
-            'loan_type_id' => 'required|exists:loan_types,id',
+            'loan_type_id' => 'required|exists:loan_types,id,created_by,' . creatorId(),
             'type' => 'required|in:fixed,percentage',
             'amount' => 'required|numeric|min:0',
             'start_date' => 'required|date',

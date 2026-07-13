@@ -14,7 +14,7 @@ class UpdateDeductionRequest extends FormRequest
     public function rules()
     {
         return [
-            'deduction_type_id' => 'required|exists:deduction_types,id',
+            'deduction_type_id' => 'required|exists:deduction_types,id,created_by,' . creatorId(),
             'type' => 'required|in:fixed,percentage',
             'amount' => 'required|numeric|min:0',
         ];

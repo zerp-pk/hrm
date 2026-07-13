@@ -15,7 +15,7 @@ class StoreAwardRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:users,id',
-            'award_type_id' => 'required|exists:award_types,id',
+            'award_type_id' => 'required|exists:award_types,id,created_by,' . creatorId(),
             'award_date' => 'required|string|max:255',
             'description' => 'nullable',
             'certificate' => 'nullable'

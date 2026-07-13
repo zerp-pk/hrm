@@ -2,6 +2,7 @@
 
 namespace Zerp\Hrm\Models;
 
+use App\Models\Concerns\TenantScoped;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
@@ -9,7 +10,7 @@ use Zerp\Hrm\Models\TerminationType;
 
 class Termination extends Model
 {
-    use HasFactory;
+    use HasFactory, TenantScoped;
 
     protected $fillable = [
         'notice_date',

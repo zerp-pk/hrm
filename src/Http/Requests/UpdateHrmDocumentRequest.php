@@ -15,7 +15,7 @@ class UpdateHrmDocumentRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'document_category_id' => 'required|exists:document_categories,id',
+            'document_category_id' => 'required|exists:document_categories,id,created_by,' . creatorId(),
             'description' => 'nullable|string',
             'document' => 'required|string',
         ];

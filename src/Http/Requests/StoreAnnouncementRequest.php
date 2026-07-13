@@ -15,9 +15,9 @@ class StoreAnnouncementRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'announcement_category_id' => 'nullable|exists:announcement_categories,id',
+            'announcement_category_id' => 'nullable|exists:announcement_categories,id,created_by,' . creatorId(),
             'departments' => 'required|array',
-            'departments.*' => 'exists:departments,id',
+            'departments.*' => 'exists:departments,id,created_by,' . creatorId(),
             'description' => 'required',
             'priority' => 'required',
             'start_date' => 'required|date|after_or_equal:today',

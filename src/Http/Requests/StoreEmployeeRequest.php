@@ -17,7 +17,7 @@ class StoreEmployeeRequest extends FormRequest
             'employee_id' => 'required|max:50',
             'date_of_birth' => 'required|date',
             'gender' => 'required',
-            'shift_id' => 'required|exists:shifts,id',
+            'shift_id' => 'required|exists:shifts,id,created_by,' . creatorId(),
             'date_of_joining' => 'required|date',
             'employment_type' => 'required',
             'address_line_1' => 'required|max:255',
@@ -40,11 +40,11 @@ class StoreEmployeeRequest extends FormRequest
             'days_per_week' => 'required|numeric|min:0|max:7',
             'rate_per_hour' => 'required|numeric|min:0',
             'user_id' => 'required|exists:users,id',
-            'branch_id' => 'required|exists:branches,id',
-            'department_id' => 'required|exists:departments,id',
-            'designation_id' => 'required|exists:designations,id',
+            'branch_id' => 'required|exists:branches,id,created_by,' . creatorId(),
+            'department_id' => 'required|exists:departments,id,created_by,' . creatorId(),
+            'designation_id' => 'required|exists:designations,id,created_by,' . creatorId(),
             'documents' => 'required|array|min:1',
-            'documents.*.document_type_id' => 'required|exists:employee_document_types,id',
+            'documents.*.document_type_id' => 'required|exists:employee_document_types,id,created_by,' . creatorId(),
             'documents.*.file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
         ];
     }

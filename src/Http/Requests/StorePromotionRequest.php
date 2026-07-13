@@ -15,9 +15,9 @@ class StorePromotionRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:users,id',
-            'current_branch_id' => 'required|exists:branches,id',
-            'current_department_id' => 'required|exists:departments,id',
-            'current_designation_id' => 'required|exists:designations,id',
+            'current_branch_id' => 'required|exists:branches,id,created_by,' . creatorId(),
+            'current_department_id' => 'required|exists:departments,id,created_by,' . creatorId(),
+            'current_designation_id' => 'required|exists:designations,id,created_by,' . creatorId(),
             'effective_date' => 'required|date',
             'reason' => 'nullable|string',
             'document' => 'nullable|string',

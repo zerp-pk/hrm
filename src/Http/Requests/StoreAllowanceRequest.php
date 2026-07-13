@@ -14,8 +14,8 @@ class StoreAllowanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee_id' => 'required|integer|exists:employees,id',
-            'allowance_type_id' => 'required|integer|exists:allowance_types,id',
+            'employee_id' => 'required|integer|exists:employees,id,created_by,' . creatorId(),
+            'allowance_type_id' => 'required|integer|exists:allowance_types,id,created_by,' . creatorId(),
             'type' => 'required|in:fixed,percentage',
             'amount' => 'required|numeric|min:0'
         ];
