@@ -16,7 +16,7 @@ class UpdateEmployeeRequest extends FormRequest
         return [
             'date_of_birth' => 'required|date',
             'gender' => 'required',
-            'shift_id' => 'required|exists:shifts,id',
+            'shift_id' => 'required|exists:shifts,id,created_by,' . creatorId(),
             'date_of_joining' => 'required|date',
             'employment_type' => 'required',
             'address_line_1' => 'required|max:255',
@@ -38,11 +38,11 @@ class UpdateEmployeeRequest extends FormRequest
             'hours_per_day' => 'required|numeric|min:0|max:24',
             'days_per_week' => 'required|numeric|min:0|max:7',
             'rate_per_hour' => 'required|numeric|min:0',
-            'branch_id' => 'required|exists:branches,id',
-            'department_id' => 'required|exists:departments,id',
-            'designation_id' => 'required|exists:designations,id',
+            'branch_id' => 'required|exists:branches,id,created_by,' . creatorId(),
+            'department_id' => 'required|exists:departments,id,created_by,' . creatorId(),
+            'designation_id' => 'required|exists:designations,id,created_by,' . creatorId(),
             'documents' => 'nullable|array',
-            'documents.*.document_type_id' => 'nullable|exists:employee_document_types,id',
+            'documents.*.document_type_id' => 'nullable|exists:employee_document_types,id,created_by,' . creatorId(),
             'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         ];
     }

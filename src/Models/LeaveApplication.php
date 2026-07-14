@@ -2,6 +2,7 @@
 
 namespace Zerp\Hrm\Models;
 
+use App\Models\Concerns\TenantScoped;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
@@ -9,7 +10,7 @@ use Zerp\Hrm\Models\LeaveType;
 
 class LeaveApplication extends Model
 {
-    use HasFactory;
+    use HasFactory, TenantScoped;
 
     protected $fillable = [
         'start_date',

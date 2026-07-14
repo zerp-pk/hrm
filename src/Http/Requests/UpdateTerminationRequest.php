@@ -15,7 +15,7 @@ class UpdateTerminationRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:users,id',
-            'termination_type_id' => 'required|exists:termination_types,id',
+            'termination_type_id' => 'required|exists:termination_types,id,created_by,' . creatorId(),
             'notice_date' => 'required|date|before:termination_date',
             'termination_date' => 'required|date',
             'reason' => 'required|max:255',

@@ -15,8 +15,8 @@ class StoreDesignationRequest extends FormRequest
     {
         return [
             'designation_name' => 'required|max:100',
-            'branch_id' => 'required|exists:branches,id',
-            'department_id' => 'required|exists:departments,id'
+            'branch_id' => 'required|exists:branches,id,created_by,' . creatorId(),
+            'department_id' => 'required|exists:departments,id,created_by,' . creatorId()
         ];
     }
 }

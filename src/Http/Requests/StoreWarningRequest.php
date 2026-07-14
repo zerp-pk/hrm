@@ -16,7 +16,7 @@ class StoreWarningRequest extends FormRequest
         return [
             'employee_id' => 'required|exists:users,id',
             'warning_by' => 'required|exists:users,id',
-            'warning_type_id' => 'required|exists:warning_types,id',
+            'warning_type_id' => 'required|exists:warning_types,id,created_by,' . creatorId(),
             'subject' => 'required|max:255',
             'severity' => 'required',
             'warning_date' => 'required|date',

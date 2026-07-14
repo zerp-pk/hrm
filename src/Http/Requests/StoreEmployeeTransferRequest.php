@@ -15,9 +15,9 @@ class StoreEmployeeTransferRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:users,id',
-            'to_branch_id' => 'required|exists:branches,id',
-            'to_department_id' => 'required|exists:departments,id',
-            'to_designation_id' => 'required|exists:designations,id',
+            'to_branch_id' => 'required|exists:branches,id,created_by,' . creatorId(),
+            'to_department_id' => 'required|exists:departments,id,created_by,' . creatorId(),
+            'to_designation_id' => 'required|exists:designations,id,created_by,' . creatorId(),
             'effective_date' => 'required|date|after_or_equal:today',
             'reason' => 'required|string|max:500',
             'document' => 'nullable|string'

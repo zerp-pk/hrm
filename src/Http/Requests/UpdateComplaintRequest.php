@@ -16,7 +16,7 @@ class UpdateComplaintRequest extends FormRequest
         return [
             'employee_id' => 'required|exists:users,id',
             'against_employee_id' => 'required|exists:users,id',
-            'complaint_type_id' => 'required|exists:complaint_types,id',
+            'complaint_type_id' => 'required|exists:complaint_types,id,created_by,' . creatorId(),
             'subject' => 'required|string|max:255',
             'description' => 'required|string',
             'complaint_date' => 'required|date',

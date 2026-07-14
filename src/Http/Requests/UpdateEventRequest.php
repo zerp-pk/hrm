@@ -15,9 +15,9 @@ class UpdateEventRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'event_type_id' => 'required|exists:event_types,id',
+            'event_type_id' => 'required|exists:event_types,id,created_by,' . creatorId(),
             'departments' => 'required|array',
-            'departments.*' => 'exists:departments,id',
+            'departments.*' => 'exists:departments,id,created_by,' . creatorId(),
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required|date_format:H:i',

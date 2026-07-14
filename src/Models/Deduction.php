@@ -3,11 +3,12 @@
 namespace Zerp\Hrm\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\TenantScoped;
 use Illuminate\Database\Eloquent\Model;
 
 class Deduction extends Model
 {
-    use HasFactory;
+    use HasFactory, TenantScoped;
 
     protected $fillable = [
         'employee_id',

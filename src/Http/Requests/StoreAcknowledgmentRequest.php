@@ -15,7 +15,7 @@ class StoreAcknowledgmentRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:users,id',
-            'document_id' => 'required|exists:hrm_documents,id',
+            'document_id' => 'required|exists:hrm_documents,id,created_by,' . creatorId(),
             'acknowledgment_note' => 'nullable|string'
         ];
     }
