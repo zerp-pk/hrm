@@ -54,7 +54,7 @@ export default function EmployeeCard() {
                 filename: `id-card-${employee.user?.name || employee.employee_id}.pdf`,
                 image: { type: 'jpeg' as const, quality: 0.98 },
                 html2canvas: { scale: 3, useCORS: true, backgroundColor: null },
-                // CR80 ID-card size (mm), portrait — one card, cut to size.
+                // CR80 ID-card size (mm), portrait - one card, cut to size.
                 jsPDF: { unit: 'mm' as const, format: [54, 86], orientation: 'portrait' as const },
             }).from(el as HTMLElement).save();
             if (autoTriggered) setTimeout(() => window.close(), 800);
@@ -74,7 +74,7 @@ export default function EmployeeCard() {
                 </div>
             )}
 
-            {/* Card (capture target) — inline hex styles keep html2canvas happy */}
+            {/* Card (capture target) - inline hex styles keep html2canvas happy */}
             <div className="card-capture" style={{
                 width: 324, height: 516, background: '#ffffff', borderRadius: 14,
                 overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.15)', fontFamily: 'Arial, sans-serif',
@@ -102,16 +102,16 @@ export default function EmployeeCard() {
                 {/* Identity */}
                 <div style={{ textAlign: 'center', padding: '10px 16px 0' }}>
                     <div style={{ fontSize: 19, fontWeight: 700, color: '#0f172a' }}>{employee.user?.name}</div>
-                    <div style={{ fontSize: 13, color: primary, fontWeight: 600, marginTop: 2 }}>{employee.designation?.designation_name || '—'}</div>
+                    <div style={{ fontSize: 13, color: primary, fontWeight: 600, marginTop: 2 }}>{employee.designation?.designation_name || '-'}</div>
                 </div>
 
                 {/* Details */}
                 <div style={{ padding: '12px 20px', fontSize: 12, color: '#334155', flex: 1 }}>
                     {[
                         [t('Employee ID'), employee.employee_id],
-                        [t('Department'), employee.department?.department_name || '—'],
-                        [t('Branch'), employee.branch?.branch_name || '—'],
-                        [t('Joined'), employee.date_of_joining ? formatDate(employee.date_of_joining) : '—'],
+                        [t('Department'), employee.department?.department_name || '-'],
+                        [t('Branch'), employee.branch?.branch_name || '-'],
+                        [t('Joined'), employee.date_of_joining ? formatDate(employee.date_of_joining) : '-'],
                     ].map(([label, value]) => (
                         <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #f1f5f9' }}>
                             <span style={{ color: '#94a3b8' }}>{label}</span>
