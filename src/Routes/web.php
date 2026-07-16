@@ -75,15 +75,10 @@ use Illuminate\Support\Facades\Route;
 use Zerp\Hrm\Http\Controllers\DashboardController;
 use Zerp\Hrm\Http\Controllers\BranchController;
 use Zerp\Hrm\Http\Controllers\HrmDocumentController;
-use Zerp\Hrm\Http\Controllers\SystemSetupController;
 use Zerp\Hrm\Http\Controllers\WorkingDaysController;
 
 Route::middleware(['web', 'auth', 'verified', 'PlanModuleCheck:Hrm'])->group(function () {
     Route::get('/dashboard/hrm', [DashboardController::class, 'index'])->name('hrm.index');
-
-    Route::prefix('hrm/system-setup')->name('hrm.system-setup.')->group(function () {
-        Route::get('/', [SystemSetupController::class, 'index'])->name('index');
-    });
 
     Route::prefix('hrm/branches')->name('hrm.branches.')->group(function () {
         Route::get('/', [BranchController::class, 'index'])->name('index');
