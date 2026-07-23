@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Zerp\Hrm\Http\Requests\Api\StoreLeaveRequest;
+use Zerp\Hrm\Http\Resources\LeaveApplicationResource;
 use Zerp\Hrm\Models\Holiday;
 use Zerp\Hrm\Models\LeaveApplication;
 use Zerp\Hrm\Models\LeaveType;
@@ -45,21 +46,9 @@ class LeaveApiController extends Controller
                     ->paginate(request('per_page', 10))
                     ->withQueryString();
 
-                $leaveapplications->getCollection()->transform(function ($leave) {
-                    return [
-                        'id'               => $leave->id,
-                        'employee_id'      => $leave->employee_id,
-                        'start_date'       => $leave->start_date->format('Y-m-d'),
-                        'end_date'         => $leave->end_date->format('Y-m-d'),
-                        'total_days'       => $leave->total_days,
-                        'status'           => $leave->status,
-                        'reason'           => $leave->reason,
-                        'approver_comment' => $leave->approver_comment,
-                        'leave_type_id'    => $leave->leave_type_id,
-                        'attachment'       => $leave->attachment ? getImageUrlPrefix() . '/' . $leave->attachment : getImageUrlPrefix() . '/' . 'avatar.png',
-                        'created_by'       => $leave->created_by
-                    ];
-                });
+                $leaveapplications->getCollection()->transform(
+                    fn ($leave) => (new LeaveApplicationResource($leave))->resolve()
+                );
 
                 return $this->paginatedResponse($leaveapplications, 'Leave applications retrieved successfully');
             } else {
@@ -70,23 +59,12 @@ class LeaveApiController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(StoreLeaveRequest $request)
     {
         try {
             if (Auth::user()->can('create-leave-applications')) {
 
-                $validator = Validator::make($request->all(), [
-                    'leave_type_id' => 'required|exists:leave_types,id,created_by,' . creatorId(),
-                    'start_date'    => 'required|date',
-                    'end_date'      => 'required|date|after_or_equal:start_date',
-                    'reason'        => 'required|string',
-                    'attachment'    => 'nullable',
-                ]);
-
-                if ($validator->fails()) {
-                    return $this->validationErrorResponse($validator->errors());
-                }
-                $validated = $validator->validated();
+                $validated = $request->validated();
                 $employeeId = Auth::id();
 
                     // Validate working day, leave, and holiday
@@ -206,20 +184,10 @@ class LeaveApiController extends Controller
                     }
                 }
 
-                $data = [
-                    'id'               => $leaveapplication->id,
-                    'employee_id'      => $leaveapplication->employee_id,
-                    'start_date'       => $leaveapplication->start_date->format('Y-m-d'),
-                    'end_date'         => $leaveapplication->end_date->format('Y-m-d'),
-                    'total_days'       => $leaveapplication->total_days,
-                    'status'           => $leaveapplication->status,
-                    'reason'           => $leaveapplication->reason,
-                    'approver_comment' => $leaveapplication->approver_comment,
-                    'leave_type_id'    => $leaveapplication->leave_type_id,
-                    'attachment'       => $leaveapplication->attachment ? getImageUrlPrefix() . '/' . $leaveapplication->attachment : '',
-                    'created_by'       => $leaveapplication->created_by
-                ];
-                return $this->successResponse($data, 'Leave successfully created.');
+                return $this->successResponse(
+                    (new LeaveApplicationResource($leaveapplication))->resolve(),
+                    'Leave successfully created.'
+                );
             } else {
                 return $this->errorResponse('Permission denied');
             }
