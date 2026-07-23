@@ -5,7 +5,7 @@ namespace Zerp\Hrm\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Zerp\Hrm\Http\Requests\Api\ClockInOutRequest;
 use Zerp\Hrm\Models\Employee;
 use Zerp\Hrm\Models\Attendance;
 use Zerp\Hrm\Models\Shift;
@@ -19,16 +19,8 @@ class AttendanceApiController extends Controller
 {
     use ApiResponseTrait;
 
-    public function clockInOut(Request $request)
+    public function clockInOut(ClockInOutRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'type' => 'required|in:clockin,clockout',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->validationErrorResponse($validator->errors());
-        }
-
         if ($request->type == 'clockin') {
             return $this->clockIn($request);
         } else {
