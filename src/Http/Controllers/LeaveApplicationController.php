@@ -51,7 +51,7 @@ class LeaveApplicationController extends Controller
                 ->when(request('leave_type_id'), fn($q) => $q->where('leave_type_id', request('leave_type_id')))
                 ->when(request('start_date'), fn($q) => $q->whereDate('start_date', '>=', request('start_date')))
                 ->when(request('end_date'), fn($q) => $q->whereDate('end_date', '<=', request('end_date')))
-                ->when(request('sort'), fn($q) => $q->orderBy(request('sort'), request('direction', 'asc')), fn($q) => $q->latest())
+                ->when(request('sort'), fn($q) => $q->sortSafe(request('sort'), request('direction'), 'created_at', 'desc'), fn($q) => $q->latest())
                 ->paginate(request('per_page', 10))
                 ->withQueryString();
 
