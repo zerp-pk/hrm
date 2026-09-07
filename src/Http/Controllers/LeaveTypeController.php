@@ -38,7 +38,7 @@ class LeaveTypeController extends Controller
                     $q->where('is_paid', request('is_paid'));
                 })
 
-                ->when(request('sort'), fn($q) => $q->orderBy(request('sort'), request('direction', 'asc')), fn($q) => $q->latest())
+                ->when(request('sort'), fn($q) => $q->sortSafe(request('sort'), request('direction'), 'created_at', 'desc'), fn($q) => $q->latest())
                 ->paginate(request('per_page', 10))
                 ->withQueryString();
 

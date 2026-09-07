@@ -42,7 +42,7 @@ class ComplaintController extends Controller
                 ->when(request('employee_id') && request('employee_id') !== 'all', fn($q) => $q->where('employee_id', request('employee_id')))
                 ->when(request('complaint_type_id') && request('complaint_type_id') !== 'all', fn($q) => $q->where('complaint_type_id', request('complaint_type_id')))
                 ->when(request('status') && request('status') !== 'all', fn($q) => $q->where('status', request('status')))
-                ->when(request('sort'), fn($q) => $q->orderBy(request('sort'), request('direction', 'asc')), fn($q) => $q->latest())
+                ->when(request('sort'), fn($q) => $q->sortSafe(request('sort'), request('direction'), 'created_at', 'desc'), fn($q) => $q->latest())
                 ->paginate(request('per_page', 10))
                 ->withQueryString();
 

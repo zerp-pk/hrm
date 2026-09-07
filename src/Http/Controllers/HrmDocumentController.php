@@ -33,7 +33,7 @@ class HrmDocumentController extends Controller
                     $q->where('title', 'like', '%' . request('title') . '%');
                 })
                 ->when(request('document_category_id') && request('document_category_id') !== '', fn($q) => $q->where('document_category_id', request('document_category_id')))
-                ->when(request('sort'), fn($q) => $q->orderBy(request('sort'), request('direction', 'asc')), fn($q) => $q->latest())
+                ->when(request('sort'), fn($q) => $q->sortSafe(request('sort'), request('direction'), 'created_at', 'desc'), fn($q) => $q->latest())
                 ->paginate(request('per_page', 10))
                 ->withQueryString();
 
